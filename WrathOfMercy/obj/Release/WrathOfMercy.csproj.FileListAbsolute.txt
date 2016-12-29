@@ -1,0 +1,11 @@
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\bin\Release\WrathOfMercy.exe.config
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\bin\Release\WrathOfMercy.exe
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\bin\Release\WrathOfMercy.pdb
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\bin\Release\Engine.dll
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\bin\Release\Engine.pdb
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.csprojResolveAssemblyReference.cache
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.Properties.Resources.resources
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.WrathOfMercy.resources
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.csproj.GenerateResource.Cache
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.exe
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Release\WrathOfMercy.pdb
