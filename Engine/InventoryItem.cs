@@ -9,6 +9,16 @@ namespace Engine
 {
   public class InventoryItem : INotifyPropertyChanged
   {
+    public int ItemID
+    {
+      get { return Details.ID; }
+    }
+
+    public int Price
+    {
+      get { return Details.Price; }
+    }
+
     private Item _details;
     private int _quantity;
     public string Description

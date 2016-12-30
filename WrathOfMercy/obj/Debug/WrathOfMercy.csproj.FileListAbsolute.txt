@@ -9,3 +9,4 @@ D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Debug\WrathOfMercy.WrathOf
 D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Debug\WrathOfMercy.csproj.GenerateResource.Cache
 D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Debug\WrathOfMercy.exe
 D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Debug\WrathOfMercy.pdb
+D:\code online\Projects\WrathOfMercy\WrathOfMercy\obj\Debug\WrathOfMercy.TradingScreen.resources

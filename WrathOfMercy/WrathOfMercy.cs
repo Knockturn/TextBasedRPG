@@ -134,6 +134,7 @@ namespace WrathOfMercy
       if (propertyChangedEventArgs.PropertyName == "CurrentLocation")
       {
         // Show/hide available movement buttons
+        btnTrade.Visible = (_player.CurrentLocation.VendorWorkingHere != null);
         btnNorth.Visible = (_player.CurrentLocation.LocationToNorth != null);
         btnEast.Visible = (_player.CurrentLocation.LocationToEast != null);
         btnSouth.Visible = (_player.CurrentLocation.LocationToSouth != null);
@@ -204,6 +205,12 @@ namespace WrathOfMercy
     private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
     {
       _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
+    }
+    private void btnTrade_Click(object sender, EventArgs e)
+    {
+      TradingScreen tradingScreen = new TradingScreen(_player);
+      tradingScreen.StartPosition = FormStartPosition.CenterParent;
+      tradingScreen.ShowDialog(this);
     }
   }
 }
