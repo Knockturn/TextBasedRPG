@@ -10,7 +10,7 @@ namespace Engine
   public class Player : LivingCreature
   {
     public int Gold { get; set; }
-    public int ExperiencePoints { get; set; }
+    public int ExperiencePoints { get; private set; }
     public Weapon CurrentWeapon { get; set; }
     public int Level
     {
@@ -19,7 +19,6 @@ namespace Engine
     public Location CurrentLocation { get; set; }
     public List<InventoryItem> Inventory { get; set; }
     public List<PlayerQuest> Quests { get; set; }
-
     private Player(int currentHitPoints, int maximumHitPoints, int gold, int experiencePoints) : base(currentHitPoints, maximumHitPoints)
     {
       Gold = gold;
@@ -36,6 +35,11 @@ namespace Engine
       player.CurrentLocation = World.LocationByID(World.LOCATION_ID_HOME);
 
       return player;
+    }
+    public void AddExperiencePoints(int experiencePointsToAdd)
+    {
+      ExperiencePoints += experiencePointsToAdd;
+      MaximumHitPoints = (Level * 10);
     }
 
     public static Player CreatePlayerFromXmlString(string xmlPlayerData)
