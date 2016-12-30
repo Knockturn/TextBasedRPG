@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using Engine;
 
@@ -16,16 +17,23 @@ namespace WrathOfMercy
   {
     private Player _player;
     private Monster _currentMonster;
+    private const string PLAYER_DATA_FILE_NAME = "PlayerData.xml";
 
     public WrathOfMercy()
     {
       InitializeComponent();
 
-      _player = new Player(10, 10, 20, 0);
-      MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
-      _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
+      if (File.Exists(PLAYER_DATA_FILE_NAME))
+      {
+        _player = Player.CreatePlayerFromXmlString(File.ReadAllText(PLAYER_DATA_FILE_NAME));
+      }
+      else
+      {
+        _player = Player.CreateDefaultPlayer();
+      }
 
-      // Refresh player's stats
+      MoveTo(_player.CurrentLocation);
+
       UpdatePlayerStats();
     }
 
@@ -469,6 +477,11 @@ namespace WrathOfMercy
     {
       rtbMessages.SelectionStart = rtbMessages.Text.Length;
       rtbMessages.ScrollToCaret();
+    }
+
+    private void WrathOfMercy_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      File.WriteAllText(PLAYER_DATA_FILE_NAME, _player.ToXmlString());
     }
   }
 }

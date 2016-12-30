@@ -291,6 +291,7 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Name = "WrathOfMercy";
       this.Text = "Wrath Of Mercy - ©iBeAwesome Studio ";
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WrathOfMercy_FormClosing);
       ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
       this.ResumeLayout(false);
