@@ -37,7 +37,84 @@ namespace WrathOfMercy
       lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
       lblLevel.DataBindings.Add("Text", _player, "Level");
 
+      dgvInventory.RowHeadersVisible = false;
+      dgvInventory.AutoGenerateColumns = false;
+
+      dgvInventory.DataSource = _player.Inventory;
+
+      dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+      {
+        HeaderText = "Name",
+        Width = 197,
+        DataPropertyName = "Description"
+      });
+
+      dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+      {
+        HeaderText = "Quantity",
+        DataPropertyName = "Quantity"
+      });
+
+      dgvQuests.RowHeadersVisible = false;
+      dgvQuests.AutoGenerateColumns = false;
+
+      dgvQuests.DataSource = _player.Quests;
+
+      dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+      {
+        HeaderText = "Name",
+        Width = 197,
+        DataPropertyName = "Name"
+      });
+
+      dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+      {
+        HeaderText = "Done?",
+        DataPropertyName = "IsCompleted"
+      });
+
+      cboWeapons.DataSource = _player.Weapons;
+      cboWeapons.DisplayMember = "Name";
+      cboWeapons.ValueMember = "Id";
+
+      if (_player.CurrentWeapon != null)
+      {
+        cboWeapons.SelectedItem = _player.CurrentWeapon;
+      }
+
+      cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
+
+      cboPotions.DataSource = _player.Potions;
+      cboPotions.DisplayMember = "Name";
+      cboPotions.ValueMember = "Id";
+
+      _player.PropertyChanged += PlayerOnPropertyChanged;
+
       MoveTo(_player.CurrentLocation);
+    }
+    private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+    {
+      if (propertyChangedEventArgs.PropertyName == "Weapons")
+      {
+        cboWeapons.DataSource = _player.Weapons;
+
+        if (!_player.Weapons.Any())
+        {
+          cboWeapons.Visible = false;
+          btnUseWeapon.Visible = false;
+        }
+      }
+
+      if (propertyChangedEventArgs.PropertyName == "Potions")
+      {
+        cboPotions.DataSource = _player.Potions;
+
+        if (!_player.Potions.Any())
+        {
+          cboPotions.Visible = false;
+          btnUsePotion.Visible = false;
+        }
+      }
     }
     private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -177,10 +254,10 @@ namespace WrathOfMercy
           _currentMonster.LootTable.Add(lootItem);
         }
 
-        cboWeapons.Visible = true;
-        cboPotions.Visible = true;
-        btnUseWeapon.Visible = true;
-        btnUsePotion.Visible = true;
+        cboWeapons.Visible = _player.Weapons.Any();
+        cboPotions.Visible = _player.Potions.Any();
+        btnUseWeapon.Visible = _player.Weapons.Any();
+        btnUsePotion.Visible = _player.Potions.Any();
       }
       else
       {
@@ -195,17 +272,6 @@ namespace WrathOfMercy
       // Refresh player's stats
       UpdatePlayerStats();
 
-      // Refresh player's inventory list
-      UpdateInventoryListInUI();
-
-      // Refresh player's quest list
-      UpdateQuestListInUI();
-
-      // Refresh player's weapons combobox
-      UpdateWeaponListInUI();
-
-      // Refresh player's potions combobox
-      UpdatePotionListInUI();
     }
     private void UpdatePlayerStats()
     {
@@ -214,111 +280,6 @@ namespace WrathOfMercy
       lblGold.Text = _player.Gold.ToString();
       lblExperience.Text = _player.ExperiencePoints.ToString();
       lblLevel.Text = _player.Level.ToString();
-    }
-    private void UpdateInventoryListInUI()
-    {
-      dgvInventory.RowHeadersVisible = false;
-
-      dgvInventory.ColumnCount = 2;
-      dgvInventory.Columns[0].Name = "Name";
-      dgvInventory.Columns[0].Width = 197;
-      dgvInventory.Columns[1].Name = "Quantity";
-
-      dgvInventory.Rows.Clear();
-
-      foreach (InventoryItem inventoryItem in _player.Inventory)
-      {
-        if (inventoryItem.Quantity > 0)
-        {
-          dgvInventory.Rows.Add(new[] { inventoryItem.Details.Name, inventoryItem.Quantity.ToString() });
-        }
-      }
-    }
-
-    private void UpdateQuestListInUI()
-    {
-      dgvQuests.RowHeadersVisible = false;
-
-      dgvQuests.ColumnCount = 2;
-      dgvQuests.Columns[0].Name = "Name";
-      dgvQuests.Columns[0].Width = 197;
-      dgvQuests.Columns[1].Name = "Done?";
-
-      dgvQuests.Rows.Clear();
-
-      foreach (PlayerQuest playerQuest in _player.Quests)
-      {
-        dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
-      }
-    }
-    private void UpdateWeaponListInUI()
-    {
-      List<Weapon> weapons = new List<Weapon>();
-
-      foreach (InventoryItem inventoryItem in _player.Inventory)
-      {
-        if (inventoryItem.Details is Weapon)
-        {
-          if (inventoryItem.Quantity > 0)
-          {
-            weapons.Add((Weapon)inventoryItem.Details);
-          }
-        }
-      }
-
-      if (weapons.Count == 0)
-      {
-        // The player doesn't have any weapons, so hide the weapon combobox and "Use" button
-        cboWeapons.Visible = false;
-        btnUseWeapon.Visible = false;
-      }
-      else
-      {
-        cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
-        cboWeapons.DataSource = weapons;
-        cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
-        cboWeapons.DisplayMember = "Name";
-        cboWeapons.ValueMember = "ID";
-
-        if (_player.CurrentWeapon != null)
-        {
-          cboWeapons.SelectedItem = _player.CurrentWeapon;
-        }
-        else
-        {
-          cboWeapons.SelectedIndex = 0;
-        }
-      }
-    }
-    private void UpdatePotionListInUI()
-    {
-      List<HealingPotion> healingPotions = new List<HealingPotion>();
-
-      foreach (InventoryItem inventoryItem in _player.Inventory)
-      {
-        if (inventoryItem.Details is HealingPotion)
-        {
-          if (inventoryItem.Quantity > 0)
-          {
-            healingPotions.Add((HealingPotion)inventoryItem.Details);
-          }
-        }
-      }
-
-      if (healingPotions.Count == 0)
-      {
-        // The player doesn't have any potions, so hide the potion combobox and "Use" button
-        cboPotions.Visible = false;
-        btnUsePotion.Visible = false;
-      }
-      else
-      {
-        cboPotions.DataSource = healingPotions;
-        cboPotions.DisplayMember = "Name";
-        cboPotions.ValueMember = "ID";
-
-        cboPotions.SelectedIndex = 0;
-      }
     }
 
     private void btnUseWeapon_Click(object sender, EventArgs e)
@@ -396,9 +357,6 @@ namespace WrathOfMercy
         lblLevel.Text = _player.Level.ToString();
 
         UpdatePlayerStats();
-        UpdateInventoryListInUI();
-        UpdateWeaponListInUI();
-        UpdatePotionListInUI();
 
         // Add a blank line to the messages box, just for appearance.
         rtbMessages.Text += Environment.NewLine;
@@ -448,14 +406,7 @@ namespace WrathOfMercy
       }
 
       // Remove the potion from the player's inventory
-      foreach (InventoryItem ii in _player.Inventory)
-      {
-        if (ii.Details.ID == potion.ID)
-        {
-          ii.Quantity--;
-          break;
-        }
-      }
+      _player.RemoveItemFromInventory(potion, 1);
 
       // Display message
       rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
@@ -482,8 +433,6 @@ namespace WrathOfMercy
 
       // Refresh player data in UI
       lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-      UpdateInventoryListInUI();
-      UpdatePotionListInUI();
     }
 
     private void rtbMessages_TextChanged(object sender, EventArgs e)
