@@ -2,4 +2,3 @@ D:\code online\Projects\WrathOfMercy\Engine\bin\Debug\Engine.dll
 D:\code online\Projects\WrathOfMercy\Engine\bin\Debug\Engine.pdb
 D:\code online\Projects\WrathOfMercy\Engine\obj\Debug\Engine.dll
 D:\code online\Projects\WrathOfMercy\Engine\obj\Debug\Engine.pdb
-D:\code online\Projects\WrathOfMercy\Engine\obj\Debug\Engine.csprojResolveAssemblyReference.cache
