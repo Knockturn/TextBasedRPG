@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 
 namespace Engine
@@ -7,7 +6,7 @@ namespace Engine
   public class Vendor : INotifyPropertyChanged
   {
     public string Name { get; set; }
-    public BindingList<InventoryItem> Inventory { get; private set; } //PKB 'set' instead of 'private set'
+    public BindingList<InventoryItem> Inventory { get; set; }
 
     public Vendor(string name)
     {

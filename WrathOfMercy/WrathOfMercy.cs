@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
@@ -23,13 +18,16 @@ namespace WrathOfMercy
     {
       InitializeComponent();
 
-      if (File.Exists(PLAYER_DATA_FILE_NAME))
+      if (_player == null)
       {
-        _player = Player.CreatePlayerFromXmlString(File.ReadAllText(PLAYER_DATA_FILE_NAME));
-      }
-      else
-      {
-        _player = Player.CreateDefaultPlayer();
+        if (File.Exists(PLAYER_DATA_FILE_NAME))
+        {
+          _player = Player.CreatePlayerFromXmlString(File.ReadAllText(PLAYER_DATA_FILE_NAME));
+        }
+        else
+        {
+          _player = Player.CreateDefaultPlayer();
+        }
       }
 
       lblHitPoints.DataBindings.Add("Text", _player, "CurrentHitPoints");
@@ -134,11 +132,12 @@ namespace WrathOfMercy
       if (propertyChangedEventArgs.PropertyName == "CurrentLocation")
       {
         // Show/hide available movement buttons
-        btnTrade.Visible = (_player.CurrentLocation.VendorWorkingHere != null);
         btnNorth.Visible = (_player.CurrentLocation.LocationToNorth != null);
         btnEast.Visible = (_player.CurrentLocation.LocationToEast != null);
         btnSouth.Visible = (_player.CurrentLocation.LocationToSouth != null);
         btnWest.Visible = (_player.CurrentLocation.LocationToWest != null);
+
+        btnTrade.Visible = (_player.CurrentLocation.VendorWorkingHere != null);
 
         // Display current location name and description
         rtbLocation.Text = _player.CurrentLocation.Name + Environment.NewLine;
@@ -206,6 +205,7 @@ namespace WrathOfMercy
     {
       _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
     }
+
     private void btnTrade_Click(object sender, EventArgs e)
     {
       TradingScreen tradingScreen = new TradingScreen(_player);
